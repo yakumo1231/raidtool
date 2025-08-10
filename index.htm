@@ -129,10 +129,10 @@
 
       headers = Object.keys(challengeData[0]);
       // 假設職業名稱在 C 欄 (第 3 欄)，如果有需要可在 mapping 編輯器更改
-      professionCol = headers[2];
+      professionCol = headers[1];
 
       // 建構職業 map（用 C21~C61）
-      const start = 20; const end = 61; // slice indices (21~61 rows)
+      const start = 20; const end = 81; // slice indices (21~61 rows)
       const sliceRows = challengeData.slice(start, end);
       sliceRows.forEach(r => { const name = r[professionCol]; if(name) professionRows[name]=r; });
 
