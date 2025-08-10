@@ -132,7 +132,7 @@
       professionCol = headers[1];
 
       // 建構職業 map（用 C21~C61）
-      const start = 20; const end = 81; // slice indices (21~61 rows)
+      const start = 0; const end = 61; // slice indices (0~61 rows)
       const sliceRows = challengeData.slice(start, end);
       sliceRows.forEach(r => { const name = r[professionCol]; if(name) professionRows[name]=r; });
 
