@@ -137,16 +137,18 @@
         // 載入JSON數據
         async function loadData() {
             try {
-                const data = await window.fs.readFile('challenge.json', { encoding: 'utf8' });
-                challengeData = JSON.parse(data);
-                initializeTeams();
-                updateAllSummaries();
-            } catch (error) {
-                console.error('載入數據失敗:', error);
-                // 如果無法讀取檔案，使用備用方案
-                alert('無法載入challenge.json，請確保檔案存在');
-            }
+				const response = await fetch('challenge.json'); // 路徑要和 index.html 同資料夾
+				if (!response.ok) {
+					throw new Error(`HTTP error! Status: ${response.status}`);
         }
+			challengeData = await response.json();
+			initializeTeams();
+			updateAllSummaries();
+		} catch (error) {
+			console.error('載入數據失敗:', error);
+			alert('無法載入 challenge.json，請確保檔案存在並與 index.html 同資料夾');
+		}
+	}
 
         // 初始化隊伍
         function initializeTeams() {
