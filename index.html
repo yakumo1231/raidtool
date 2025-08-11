@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>隊伍配置分析工具</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 頂部匯總數據區域 -->
+        <div class="summary-section">
+            <h1 class="main-title">隊伍配置分析工具</h1>
+            
+            <div class="summary-grid">
+                <div class="summary-card">
+                    <h3>A隊伍總計</h3>
+                    <div id="teamA-summary" class="stats-grid"></div>
+                </div>
+                
+                <div class="summary-card">
+                    <h3>B隊伍總計</h3>
+                    <div id="teamB-summary" class="stats-grid"></div>
+                </div>
+                
+                <div class="summary-card total">
+                    <h3>兩隊總和</h3>
+                    <div id="total-summary" class="stats-grid"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 模塊化數據設定區域 -->
+        <div class="modular-settings">
+            <h2>額外設定</h2>
+            <div class="settings-grid">
+                <div class="setting-item">
+                    <label>動速褲/鞋:</label>
+                    <input type="number" id="speed-gear" placeholder="輸入數值" step="0.1">
+                </div>
+                
+                <div class="setting-item">
+                    <label>技傷/暴傷:</label>
+                    <select id="damage-type">
+                        <option value="">請選擇</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                    </select>
+                </div>
+                
+                <div class="setting-item checkbox-item">
+                    <input type="checkbox" id="green-beast">
+                    <label for="green-beast">聖獸 - 綠</label>
+                </div>
+                
+                <div class="setting-item checkbox-item">
+                    <input type="checkbox" id="title-19-4">
+                    <label for="title-19-4">19-4稱號</label>
+                </div>
+                
+                <div class="setting-item checkbox-item">
+                    <input type="checkbox" id="death-title">
+                    <label for="death-title">死神稱號</label>
+                </div>
+                
+                <div class="setting-item checkbox-value">
+                    <input type="checkbox" id="armor-pen-shoes">
+                    <label for="armor-pen-shoes">2+破防鞋:</label>
+                    <input type="number" id="armor-pen-value" placeholder="數值" step="0.1" disabled>
+                </div>
+                
+                <div class="setting-item checkbox-item">
+                    <input type="checkbox" id="armor-pen-shoes-percent">
+                    <label for="armor-pen-shoes-percent">2.5%破防鞋</label>
+                </div>
+                
+                <div class="setting-item checkbox-item">
+                    <input type="checkbox" id="dream-incense">
+                    <label for="dream-incense">夢緣香爐</label>
+                </div>
+                
+                <div class="setting-item checkbox-item">
+                    <input type="checkbox" id="dark-shadow">
+                    <label for="dark-shadow">侵暗之影</label>
+                </div>
+                
+                <div class="setting-item checkbox-item">
+                    <input type="checkbox" id="dark-badge">
+                    <label for="dark-badge">暗鬼徽章</label>
+                </div>
+                
+                <div class="setting-item checkbox-item">
+                    <input type="checkbox" id="ice-crystal">
+                    <label for="ice-crystal">冰晶露</label>
+                </div>
+                
+                <div class="setting-item checkbox-item">
+                    <input type="checkbox" id="wind-ball">
+                    <label for="wind-ball">風球</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- 隊伍配置區域 -->
+        <div class="teams-section">
+            <!-- A隊伍 -->
+            <div class="team-container">
+                <h2>A隊伍</h2>
+                <div class="team-grid" id="teamA">
+                    <!-- 將由JavaScript動態生成4個成員卡片 -->
+                </div>
+            </div>
+
+            <!-- B隊伍 -->
+            <div class="team-container">
+                <h2>B隊伍</h2>
+                <div class="team-grid" id="teamB">
+                    <!-- 將由JavaScript動態生成4個成員卡片 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let challengeData = [];
+        
+        // 統計屬性列表
+        const statKeys = [
+            '物理Buff', '物理DeBuff', '物理破防', '物理總增益',
+            '魔法Buff', '魔法DeBuff', '魔法破防', '魔法總增益',
+            '護盾', '降攻', '冷卻加速(秒)', '減少冷卻(秒)',
+            '降抗', '每秒回魔', '乘算動速', '加算動速',
+            '扛吼/擋傷', '消火/解DeBuff', '霸體'
+        ];
+
+        // 載入JSON數據
+        async function loadData() {
+            try {
+                const data = await window.fs.readFile('challenge.json', { encoding: 'utf8' });
+                challengeData = JSON.parse(data);
+                initializeTeams();
+                updateAllSummaries();
+            } catch (error) {
+                console.error('載入數據失敗:', error);
+                // 如果無法讀取檔案，使用備用方案
+                alert('無法載入challenge.json，請確保檔案存在');
+            }
+        }
+
+        // 初始化隊伍
+        function initializeTeams() {
+            const teamAContainer = document.getElementById('teamA');
+            const teamBContainer = document.getElementById('teamB');
+            
+            // 為每個隊伍創建4個成員卡片
+            for (let i = 0; i < 4; i++) {
+                teamAContainer.appendChild(createMemberCard('A', i));
+                teamBContainer.appendChild(createMemberCard('B', i));
+            }
+        }
+
+        // 創建成員卡片
+        function createMemberCard(team, index) {
+            const card = document.createElement('div');
+            card.className = 'member-card';
+            card.innerHTML = `
+                <h4>成員 ${index + 1}</h4>
+                <select class="job-select" data-team="${team}" data-index="${index}">
+                    <option value="">選擇職業</option>
+                    ${challengeData.map(job => 
+                        `<option value="${job.編號}">${job.職業}</option>`
+                    ).join('')}
+                </select>
+                <div class="member-stats" id="${team}-member-${index}-stats"></div>
+            `;
+            
+            // 添加事件監聽器
+            const select = card.querySelector('.job-select');
+            select.addEventListener('change', (e) => {
+                updateMemberStats(team, index, e.target.value);
+                updateAllSummaries();
+            });
+            
+            return card;
+        }
+
+        // 更新成員統計
+        function updateMemberStats(team, index, jobId) {
+            const statsContainer = document.getElementById(`${team}-member-${index}-stats`);
+            
+            if (!jobId) {
+                statsContainer.innerHTML = '';
+                return;
+            }
+            
+            const jobData = challengeData.find(job => job.編號 === jobId);
+            if (!jobData) return;
+            
+            let statsHTML = '<div class="member-stats-grid">';
+            statKeys.forEach(key => {
+                const value = jobData[key] || '-';
+                if (value !== '' && value !== '-') {
+                    statsHTML += `
+                        <div class="stat-item">
+                            <span class="stat-label">${key}:</span>
+                            <span class="stat-value">${value}</span>
+                        </div>
+                    `;
+                }
+            });
+            statsHTML += '</div>';
+            
+            statsContainer.innerHTML = statsHTML;
+        }
+
+        // 計算隊伍總和
+        function calculateTeamStats(team) {
+            const teamStats = {};
+            const selects = document.querySelectorAll(`.job-select[data-team="${team}"]`);
+            
+            statKeys.forEach(key => {
+                teamStats[key] = 0;
+            });
+            
+            selects.forEach(select => {
+                const jobId = select.value;
+                if (jobId) {
+                    const jobData = challengeData.find(job => job.編號 === jobId);
+                    if (jobData) {
+                        statKeys.forEach(key => {
+                            const value = jobData[key];
+                            if (value && value !== '') {
+                                // 處理百分比值
+                                if (typeof value === 'string' && value.includes('%')) {
+                                    const numValue = parseFloat(value.replace('%', ''));
+                                    if (!isNaN(numValue)) {
+                                        teamStats[key] += numValue;
+                                    }
+                                } 
+                                // 處理純數字
+                                else if (!isNaN(parseFloat(value))) {
+                                    teamStats[key] += parseFloat(value);
+                                }
+                                // 處理整數值（如霸體、扛吼等）
+                                else if (!isNaN(parseInt(value))) {
+                                    teamStats[key] += parseInt(value);
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+            
+            return teamStats;
+        }
+
+        // 更新所有匯總
+        function updateAllSummaries() {
+            const teamAStats = calculateTeamStats('A');
+            const teamBStats = calculateTeamStats('B');
+            const totalStats = {};
+            
+            // 計算總和
+            statKeys.forEach(key => {
+                totalStats[key] = (teamAStats[key] || 0) + (teamBStats[key] || 0);
+            });
+            
+            // 更新顯示
+            updateSummaryDisplay('teamA-summary', teamAStats);
+            updateSummaryDisplay('teamB-summary', teamBStats);
+            updateSummaryDisplay('total-summary', totalStats);
+        }
+
+        // 更新匯總顯示
+        function updateSummaryDisplay(elementId, stats) {
+            const container = document.getElementById(elementId);
+            let html = '';
+            
+            statKeys.forEach(key => {
+                const value = stats[key];
+                if (value && value !== 0) {
+                    // 根據原始數據格式決定顯示方式
+                    let displayValue = value;
+                    if (key.includes('Buff') || key.includes('增益') || 
+                        key.includes('護盾') || key.includes('降攻') || 
+                        key.includes('回魔') || key.includes('動速')) {
+                        displayValue = value.toFixed(1) + '%';
+                    } else if (key.includes('秒')) {
+                        displayValue = value.toFixed(2);
+                    } else if (key.includes('降抗')) {
+                        displayValue = Math.round(value);
+                    } else {
+                        displayValue = value.toFixed(1) + '%';
+                    }
+                    
+                    html += `
+                        <div class="summary-stat">
+                            <span class="stat-name">${key}:</span>
+                            <span class="stat-total">${displayValue}</span>
+                        </div>
+                    `;
+                }
+            });
+            
+            container.innerHTML = html || '<div class="no-stats">無數據</div>';
+        }
+
+        // 設定事件監聽器
+        document.getElementById('armor-pen-shoes').addEventListener('change', (e) => {
+            document.getElementById('armor-pen-value').disabled = !e.target.checked;
+            if (!e.target.checked) {
+                document.getElementById('armor-pen-value').value = '';
+            }
+        });
+
+        // 頁面載入時初始化
+        document.addEventListener('DOMContentLoaded', loadData);
+    </script>
+</body>
+</html>

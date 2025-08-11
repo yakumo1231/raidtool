@@ -1,0 +1,402 @@
+/* 全域樣式 - Discord/ChatGPT 闇黑主題 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    background: linear-gradient(180deg, #1a1a1a 0%, #0d0d0d 100%);
+    color: #e3e3e3;
+    min-height: 100vh;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* 主標題 */
+.main-title {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 30px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* 匯總區域 */
+.summary-section {
+    background: #202225;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    border: 1px solid #2f3136;
+}
+
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.summary-card {
+    background: #2f3136;
+    border-radius: 8px;
+    padding: 20px;
+    border: 1px solid #40444b;
+    transition: all 0.3s ease;
+}
+
+.summary-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+    border-color: #5865f2;
+}
+
+.summary-card.total {
+    background: linear-gradient(135deg, #2f3136 0%, #36393f 100%);
+    border: 2px solid #5865f2;
+}
+
+.summary-card h3 {
+    color: #ffffff;
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #40444b;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+}
+
+.summary-stat {
+    background: #202225;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #40444b;
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-name {
+    font-size: 0.75rem;
+    color: #8e9297;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stat-total {
+    font-size: 1.1rem;
+    color: #5865f2;
+    font-weight: 600;
+    margin-top: 2px;
+}
+
+.no-stats {
+    color: #72767d;
+    font-style: italic;
+    text-align: center;
+    padding: 20px;
+}
+
+/* 模塊化設定區域 */
+.modular-settings {
+    background: #202225;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    border: 1px solid #2f3136;
+}
+
+.modular-settings h2 {
+    color: #ffffff;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #40444b;
+}
+
+.settings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+}
+
+.setting-item {
+    background: #2f3136;
+    padding: 12px 15px;
+    border-radius: 6px;
+    border: 1px solid #40444b;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.setting-item label {
+    color: #b9bbbe;
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+.setting-item input[type="number"],
+.setting-item select {
+    flex: 1;
+    background: #40444b;
+    border: 1px solid #202225;
+    color: #ffffff;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+.setting-item input[type="number"]:focus,
+.setting-item select:focus {
+    outline: none;
+    border-color: #5865f2;
+    background: #4a4d52;
+}
+
+.setting-item input[type="number"]:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.checkbox-item,
+.checkbox-value {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.checkbox-value input[type="number"] {
+    max-width: 80px;
+}
+
+input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #5865f2;
+    cursor: pointer;
+}
+
+/* 隊伍區域 */
+.teams-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+.team-container {
+    background: #202225;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    border: 1px solid #2f3136;
+}
+
+.team-container h2 {
+    color: #ffffff;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #40444b;
+    text-align: center;
+}
+
+.team-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+/* 成員卡片 */
+.member-card {
+    background: #2f3136;
+    border-radius: 8px;
+    padding: 15px;
+    border: 1px solid #40444b;
+    transition: all 0.3s ease;
+}
+
+.member-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+    border-color: #5865f2;
+}
+
+.member-card h4 {
+    color: #ffffff;
+    font-size: 1rem;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.job-select {
+    width: 100%;
+    background: #40444b;
+    border: 1px solid #202225;
+    color: #ffffff;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.job-select:hover {
+    background: #4a4d52;
+}
+
+.job-select:focus {
+    outline: none;
+    border-color: #5865f2;
+    background: #4a4d52;
+}
+
+/* 成員統計顯示 */
+.member-stats {
+    margin-top: 10px;
+}
+
+.member-stats-grid {
+    display: grid;
+    gap: 8px;
+}
+
+.stat-item {
+    background: #202225;
+    padding: 6px 10px;
+    border-radius: 4px;
+    border: 1px solid #40444b;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    transition: background 0.2s ease;
+}
+
+.stat-item:hover {
+    background: #26282c;
+}
+
+.stat-label {
+    color: #8e9297;
+    font-size: 0.8rem;
+}
+
+.stat-value {
+    color: #5865f2;
+    font-weight: 600;
+}
+
+/* 滾動條樣式 */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #2f3136;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #5865f2;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #4752c4;
+}
+
+/* 響應式設計 */
+@media (max-width: 1024px) {
+    .teams-section {
+        grid-template-columns: 1fr;
+    }
+    
+    .summary-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .team-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .settings-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .main-title {
+        font-size: 2rem;
+    }
+}
+
+/* 動畫效果 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.summary-card,
+.member-card,
+.setting-item {
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* 選擇框選項樣式 */
+option {
+    background: #2f3136;
+    color: #ffffff;
+    padding: 5px;
+}
+
+/* 突出顯示特殊數值 */
+.stat-value[data-highlight="true"] {
+    color: #f04747;
+    font-weight: 700;
+}
+
+/* 載入狀態 */
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    color: #72767d;
+}
+
+.loading::after {
+    content: "載入中...";
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
