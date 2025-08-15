@@ -372,62 +372,14 @@
         // 載入JSON數據（模擬數據，實際使用時需要真實的JSON檔案）
         async function loadData() {
             try {
-                // 模擬JSON數據，實際使用時取消註釋下面的行
-                // const response = await fetch('challenge.json');
-                // if (!response.ok) {
-                //     throw new Error(`HTTP error! Status: ${response.status}`);
-                // }
-                // challengeData = await response.json();
+                
+                 const response = await fetch('challenge.json');
+                 if (!response.ok) {
+                     throw new Error(`HTTP error! Status: ${response.status}`);
+                 }
+                 challengeData = await response.json();
                 
                 // 暫時使用模擬數據
-                challengeData = [
-                    {
-                        "編號": "001",
-                        "職業": "戰士",
-                        "物理Buff": "15.5",
-                        "物理DeBuff": "10.2",
-                        "物理破防": "8.7",
-                        "物理總增益": "25.0",
-                        "魔法Buff": "",
-                        "魔法DeBuff": "",
-                        "魔法破防": "",
-                        "魔法總增益": "",
-                        "護盾": "20.0",
-                        "降攻": "5.0",
-                        "冷卻加速(秒)": "",
-                        "減少冷卻(秒)": "",
-                        "降抗": "15",
-                        "每秒回魔": "",
-                        "乘算動速": "",
-                        "加算動速": "12.5",
-                        "扛吼/擋傷": "1",
-                        "消火/解DeBuff": "",
-                        "霸體": "1"
-                    },
-                    {
-                        "編號": "002",
-                        "職業": "法師",
-                        "物理Buff": "",
-                        "物理DeBuff": "",
-                        "物理破防": "",
-                        "物理總增益": "",
-                        "魔法Buff": "20.0",
-                        "魔法DeBuff": "12.5",
-                        "魔法破防": "10.0",
-                        "魔法總增益": "30.0",
-                        "護盾": "15.0",
-                        "降攻": "",
-                        "冷卻加速(秒)": "2.5",
-                        "減少冷卻(秒)": "",
-                        "降抗": "20",
-                        "每秒回魔": "5.0",
-                        "乘算動速": "",
-                        "加算動速": "",
-                        "扛吼/擋傷": "",
-                        "消火/解DeBuff": "1",
-                        "霸體": ""
-                    }
-                ];
                 
                 initializeTeams();
                 updateAllSummaries();
