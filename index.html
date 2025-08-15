@@ -4,105 +4,248 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>隊伍配置分析工具</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft JhengHei', Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .main-title {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 2em;
+            font-weight: bold;
+        }
+
+        /* 隊伍選擇區域 - 移至頂部 */
+        .teams-section {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .team-container {
+            flex: 1;
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .team-container h2 {
+            color: #34495e;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.5em;
+        }
+
+        .team-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .member-card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+        }
+
+        .member-card h4 {
+            color: #495057;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .job-select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .member-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            font-size: 12px;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 6px;
+            background: white;
+            border-radius: 4px;
+        }
+
+        .stat-label {
+            font-weight: bold;
+            color: #6c757d;
+        }
+
+        .stat-value {
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        /* 額外設定區域 - 濃縮為一橫排 */
+        .modular-settings {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .modular-settings h2 {
+            color: #34495e;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .settings-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .setting-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 14px;
+        }
+
+        .setting-item input[type="number"] {
+            width: 80px;
+            padding: 4px 6px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+        }
+
+        .setting-item select {
+            padding: 4px 6px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+        }
+
+        .setting-item input[type="checkbox"] {
+            margin-right: 3px;
+        }
+
+        /* 匯總數據區域 */
+        .summary-section {
+            margin-bottom: 30px;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+        }
+
+        .summary-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .summary-card.total {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .summary-card h3 {
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: 1.2em;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+
+        .summary-stat {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 8px;
+            background: rgba(0,0,0,0.05);
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+        .summary-card.total .summary-stat {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .stat-name {
+            font-weight: bold;
+        }
+
+        .stat-total {
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        .summary-card.total .stat-total {
+            color: #ffd700;
+        }
+
+        .no-stats {
+            text-align: center;
+            color: #6c757d;
+            font-style: italic;
+            padding: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .teams-section {
+                flex-direction: column;
+            }
+            
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .settings-grid {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .member-stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <!-- 頂部匯總數據區域 -->
-        <div class="summary-section">
-            <h1 class="main-title">隊伍配置分析工具</h1>
-            
-            <div class="summary-grid">
-                <div class="summary-card">
-                    <h3>A隊伍總計</h3>
-                    <div id="teamA-summary" class="stats-grid"></div>
-                </div>
-                
-                <div class="summary-card">
-                    <h3>B隊伍總計</h3>
-                    <div id="teamB-summary" class="stats-grid"></div>
-                </div>
-                
-                <div class="summary-card total">
-                    <h3>兩隊總和</h3>
-                    <div id="total-summary" class="stats-grid"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 模塊化數據設定區域 -->
-        <div class="modular-settings">
-            <h2>額外設定</h2>
-            <div class="settings-grid">
-                <div class="setting-item">
-                    <label>動速褲/鞋:</label>
-                    <input type="number" id="speed-gear" placeholder="輸入數值" step="0.1">
-                </div>
-                
-                <div class="setting-item">
-                    <label>技傷/暴傷:</label>
-                    <select id="damage-type">
-                        <option value="">請選擇</option>
-                        <option value="A">A</option>
-                        <option value="B">B</option>
-                        <option value="C">C</option>
-                    </select>
-                </div>
-                
-                <div class="setting-item checkbox-item">
-                    <input type="checkbox" id="green-beast">
-                    <label for="green-beast">聖獸 - 綠</label>
-                </div>
-                
-                <div class="setting-item checkbox-item">
-                    <input type="checkbox" id="title-19-4">
-                    <label for="title-19-4">19-4稱號</label>
-                </div>
-                
-                <div class="setting-item checkbox-item">
-                    <input type="checkbox" id="death-title">
-                    <label for="death-title">死神稱號</label>
-                </div>
-                
-                <div class="setting-item checkbox-value">
-                    <input type="checkbox" id="armor-pen-shoes">
-                    <label for="armor-pen-shoes">2+破防鞋:</label>
-                    <input type="number" id="armor-pen-value" placeholder="數值" step="0.1" disabled>
-                </div>
-                
-                <div class="setting-item checkbox-item">
-                    <input type="checkbox" id="armor-pen-shoes-percent">
-                    <label for="armor-pen-shoes-percent">2.5%破防鞋</label>
-                </div>
-                
-                <div class="setting-item checkbox-item">
-                    <input type="checkbox" id="dream-incense">
-                    <label for="dream-incense">夢緣香爐</label>
-                </div>
-                
-                <div class="setting-item checkbox-item">
-                    <input type="checkbox" id="dark-shadow">
-                    <label for="dark-shadow">侵暗之影</label>
-                </div>
-                
-                <div class="setting-item checkbox-item">
-                    <input type="checkbox" id="dark-badge">
-                    <label for="dark-badge">暗鬼徽章</label>
-                </div>
-                
-                <div class="setting-item checkbox-item">
-                    <input type="checkbox" id="ice-crystal">
-                    <label for="ice-crystal">冰晶露</label>
-                </div>
-                
-                <div class="setting-item checkbox-item">
-                    <input type="checkbox" id="wind-ball">
-                    <label for="wind-ball">風球</label>
-                </div>
-            </div>
-        </div>
-
-        <!-- 隊伍配置區域 -->
+        <h1 class="main-title">隊伍配置分析工具</h1>
+        
+        <!-- 隊伍配置區域 - 移至頂部 -->
         <div class="teams-section">
             <!-- A隊伍 -->
             <div class="team-container">
@@ -120,6 +263,98 @@
                 </div>
             </div>
         </div>
+
+        <!-- 額外設定區域 - 濃縮為一橫排 -->
+        <div class="modular-settings">
+            <h2>額外設定</h2>
+            <div class="settings-grid">
+                <div class="setting-item">
+                    <label>動速褲/鞋:</label>
+                    <input type="number" id="speed-gear" placeholder="數值" step="0.1">
+                </div>
+                
+                <div class="setting-item">
+                    <label>技傷/暴傷:</label>
+                    <select id="damage-type">
+                        <option value="">選擇</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                    </select>
+                </div>
+                
+                <div class="setting-item">
+                    <input type="checkbox" id="green-beast">
+                    <label for="green-beast">聖獸-綠</label>
+                </div>
+                
+                <div class="setting-item">
+                    <input type="checkbox" id="title-19-4">
+                    <label for="title-19-4">19-4稱號</label>
+                </div>
+                
+                <div class="setting-item">
+                    <input type="checkbox" id="death-title">
+                    <label for="death-title">死神稱號</label>
+                </div>
+                
+                <div class="setting-item">
+                    <input type="checkbox" id="armor-pen-shoes">
+                    <label for="armor-pen-shoes">2+破防鞋:</label>
+                    <input type="number" id="armor-pen-value" placeholder="數值" step="0.1" disabled>
+                </div>
+                
+                <div class="setting-item">
+                    <input type="checkbox" id="armor-pen-shoes-percent">
+                    <label for="armor-pen-shoes-percent">2.5%破防鞋</label>
+                </div>
+                
+                <div class="setting-item">
+                    <input type="checkbox" id="dream-incense">
+                    <label for="dream-incense">夢緣香爐</label>
+                </div>
+                
+                <div class="setting-item">
+                    <input type="checkbox" id="dark-shadow">
+                    <label for="dark-shadow">侵暗之影</label>
+                </div>
+                
+                <div class="setting-item">
+                    <input type="checkbox" id="dark-badge">
+                    <label for="dark-badge">暗鬼徽章</label>
+                </div>
+                
+                <div class="setting-item">
+                    <input type="checkbox" id="ice-crystal">
+                    <label for="ice-crystal">冰晶露</label>
+                </div>
+                
+                <div class="setting-item">
+                    <input type="checkbox" id="wind-ball">
+                    <label for="wind-ball">風球</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- 匯總數據區域 -->
+        <div class="summary-section">
+            <div class="summary-grid">
+                <div class="summary-card">
+                    <h3>A隊伍總計</h3>
+                    <div id="teamA-summary" class="stats-grid"></div>
+                </div>
+                
+                <div class="summary-card">
+                    <h3>B隊伍總計</h3>
+                    <div id="teamB-summary" class="stats-grid"></div>
+                </div>
+                
+                <div class="summary-card total">
+                    <h3>兩隊總和</h3>
+                    <div id="total-summary" class="stats-grid"></div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -134,21 +369,73 @@
             '扛吼/擋傷', '消火/解DeBuff', '霸體'
         ];
 
-        // 載入JSON數據
+        // 載入JSON數據（模擬數據，實際使用時需要真實的JSON檔案）
         async function loadData() {
             try {
-				const response = await fetch('challenge.json'); // 路徑要和 index.html 同資料夾
-				if (!response.ok) {
-					throw new Error(`HTTP error! Status: ${response.status}`);
+                // 模擬JSON數據，實際使用時取消註釋下面的行
+                // const response = await fetch('challenge.json');
+                // if (!response.ok) {
+                //     throw new Error(`HTTP error! Status: ${response.status}`);
+                // }
+                // challengeData = await response.json();
+                
+                // 暫時使用模擬數據
+                challengeData = [
+                    {
+                        "編號": "001",
+                        "職業": "戰士",
+                        "物理Buff": "15.5",
+                        "物理DeBuff": "10.2",
+                        "物理破防": "8.7",
+                        "物理總增益": "25.0",
+                        "魔法Buff": "",
+                        "魔法DeBuff": "",
+                        "魔法破防": "",
+                        "魔法總增益": "",
+                        "護盾": "20.0",
+                        "降攻": "5.0",
+                        "冷卻加速(秒)": "",
+                        "減少冷卻(秒)": "",
+                        "降抗": "15",
+                        "每秒回魔": "",
+                        "乘算動速": "",
+                        "加算動速": "12.5",
+                        "扛吼/擋傷": "1",
+                        "消火/解DeBuff": "",
+                        "霸體": "1"
+                    },
+                    {
+                        "編號": "002",
+                        "職業": "法師",
+                        "物理Buff": "",
+                        "物理DeBuff": "",
+                        "物理破防": "",
+                        "物理總增益": "",
+                        "魔法Buff": "20.0",
+                        "魔法DeBuff": "12.5",
+                        "魔法破防": "10.0",
+                        "魔法總增益": "30.0",
+                        "護盾": "15.0",
+                        "降攻": "",
+                        "冷卻加速(秒)": "2.5",
+                        "減少冷卻(秒)": "",
+                        "降抗": "20",
+                        "每秒回魔": "5.0",
+                        "乘算動速": "",
+                        "加算動速": "",
+                        "扛吼/擋傷": "",
+                        "消火/解DeBuff": "1",
+                        "霸體": ""
+                    }
+                ];
+                
+                initializeTeams();
+                updateAllSummaries();
+            } catch (error) {
+                console.error('載入數據失敗:', error);
+                alert('無法載入 challenge.json，請確保檔案存在並與 index.html 同資料夾');
+            }
         }
-			challengeData = await response.json();
-			initializeTeams();
-			updateAllSummaries();
-		} catch (error) {
-			console.error('載入數據失敗:', error);
-			alert('無法載入 challenge.json，請確保檔案存在並與 index.html 同資料夾');
-		}
-	}
 
         // 初始化隊伍
         function initializeTeams() {
@@ -184,32 +471,27 @@
                 updateAllSummaries();
             });
             
+            // 初始化時顯示所有統計項目
+            updateMemberStats(team, index, '');
+            
             return card;
         }
 
-        // 更新成員統計
+        // 更新成員統計 - 固定顯示所有項目
         function updateMemberStats(team, index, jobId) {
             const statsContainer = document.getElementById(`${team}-member-${index}-stats`);
             
-            if (!jobId) {
-                statsContainer.innerHTML = '';
-                return;
-            }
-            
-            const jobData = challengeData.find(job => job.編號 === jobId);
-            if (!jobData) return;
+            const jobData = jobId ? challengeData.find(job => job.編號 === jobId) : null;
             
             let statsHTML = '<div class="member-stats-grid">';
             statKeys.forEach(key => {
-                const value = jobData[key] || '-';
-                if (value !== '' && value !== '-') {
-                    statsHTML += `
-                        <div class="stat-item">
-                            <span class="stat-label">${key}:</span>
-                            <span class="stat-value">${value}</span>
-                        </div>
-                    `;
-                }
+                const value = jobData && jobData[key] ? jobData[key] : '-';
+                statsHTML += `
+                    <div class="stat-item">
+                        <span class="stat-label">${key}:</span>
+                        <span class="stat-value">${value}</span>
+                    </div>
+                `;
             });
             statsHTML += '</div>';
             
@@ -274,16 +556,17 @@
             updateSummaryDisplay('total-summary', totalStats);
         }
 
-        // 更新匯總顯示
+        // 更新匯總顯示 - 固定顯示所有項目
         function updateSummaryDisplay(elementId, stats) {
             const container = document.getElementById(elementId);
             let html = '';
             
             statKeys.forEach(key => {
-                const value = stats[key];
-                if (value && value !== 0) {
-                    // 根據原始數據格式決定顯示方式
-                    let displayValue = value;
+                const value = stats[key] || 0;
+                
+                // 根據原始數據格式決定顯示方式
+                let displayValue = '-';
+                if (value !== 0) {
                     if (key.includes('Buff') || key.includes('增益') || 
                         key.includes('護盾') || key.includes('降攻') || 
                         key.includes('回魔') || key.includes('動速')) {
@@ -292,20 +575,22 @@
                         displayValue = value.toFixed(2);
                     } else if (key.includes('降抗')) {
                         displayValue = Math.round(value);
+                    } else if (key.includes('霸體') || key.includes('扛吼') || key.includes('消火')) {
+                        displayValue = Math.round(value);
                     } else {
                         displayValue = value.toFixed(1) + '%';
                     }
-                    
-                    html += `
-                        <div class="summary-stat">
-                            <span class="stat-name">${key}:</span>
-                            <span class="stat-total">${displayValue}</span>
-                        </div>
-                    `;
                 }
+                
+                html += `
+                    <div class="summary-stat">
+                        <span class="stat-name">${key}:</span>
+                        <span class="stat-total">${displayValue}</span>
+                    </div>
+                `;
             });
             
-            container.innerHTML = html || '<div class="no-stats">無數據</div>';
+            container.innerHTML = html;
         }
 
         // 設定事件監聽器
