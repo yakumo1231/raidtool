@@ -128,7 +128,6 @@
 
         .stat-value {
             color: #00d4aa;
-            flex-wrap: wrap;
             font-weight: 600;
             font-size: 11px;
         }
