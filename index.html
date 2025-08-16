@@ -140,7 +140,6 @@ async function loadData() {
 		challengeData = await response.json();
 		initializeTeams();
 		updateAllSummaries();
-		updateAllSelects();
     } catch (error) {
         console.error('載入數據失敗:', error);
         challengeData = [];
@@ -150,26 +149,13 @@ async function loadData() {
     }
 }
 
-		function updateAllSelects() {
-			const selects = document.querySelectorAll('.job-select');
-			selects.forEach(select => {
-				const currentValue = select.value;
-				select.innerHTML = `
-					<option value="">選擇職業</option>
-					${challengeData.map(job => 
-					`<option value="${job.編號}">${job.職業}</option>`
-				).join('')}
-			`;
-			if (currentValue) {
-				select.value = currentValue;
-				}
-			});
-		}
-
         function initializeTeams() {
             const teamAContainer = document.getElementById('teamA');
             const teamBContainer = document.getElementById('teamB');
-            
+			
+			teamAContainer.innerHTML = '';
+			teamBContainer.innerHTML = '';
+			
             for (let i = 0; i < 4; i++) {
                 teamAContainer.appendChild(createMemberCard('A', i));
                 teamBContainer.appendChild(createMemberCard('B', i));
@@ -183,7 +169,7 @@ async function loadData() {
                 <h4>成員 ${index + 1}</h4>
 				<select class="job-select" data-team="${team}" data-index="${index}">
 					<option value="">選擇職業</option>
-					${challengeData && challengeData.length > 0 ? 
+					${challengeData.length > 0 ? 
 						challengeData.map(job => 
 							`<option value="${job.編號}">${job.職業}</option>`
 						).join('') : 
