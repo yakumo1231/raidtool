@@ -10,16 +10,13 @@
     <div class="container">
         <h1 class="main-title">隊伍配置分析工具</h1>
         
-        <!-- 隊伍配置區域 - 移至頂部 -->
         <div class="teams-section">
-            <!-- A隊伍 -->
             <div class="team-container">
                 <h2>A隊伍</h2>
                 <div class="team-grid" id="teamA">
                 </div>
             </div>
 
-            <!-- B隊伍 -->
             <div class="team-container">
                 <h2>B隊伍</h2>
                 <div class="team-grid" id="teamB">
@@ -27,7 +24,6 @@
             </div>
         </div>
 
-        <!-- 額外設定區域 - 濃縮為一橫排 -->
         <div class="modular-settings">
             <h2>額外設定</h2>
             <div class="settings-grid">
@@ -99,7 +95,6 @@
             </div>
         </div>
 
-        <!-- 匯總數據區域 -->
         <div class="summary-section">
             <div class="summary-grid">
                 <div class="summary-card">
@@ -131,35 +126,37 @@
             '扛吼/擋傷', '消火/解DeBuff', '霸體'
         ];
 
-async function loadData() {
-    try {
-        const response = await fetch('challenge.json');
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
+        async function loadData() {
+            try {
+                const response = await fetch('challenge.json');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                challengeData = await response.json();
+                initializeTeams();
+                updateAllSummaries();
+            } catch (error) {
+                console.error('載入數據失敗:', error);
+                challengeData = [];
+                initializeTeams();
+                updateAllSummaries();
+                alert('無法載入 challenge.json，請確保檔案存在並與 index.html 同資料夾');
+            }
         }
-		challengeData = await response.json();
-		initializeTeams();
-		updateAllSummaries();
-    } catch (error) {
-        console.error('載入數據失敗:', error);
-        challengeData = [];
-        initializeTeams();
-        updateAllSummaries();
-        alert('無法載入 challenge.json，請確保檔案存在並與 index.html 同資料夾');
-    }
-}
 
         function initializeTeams() {
             const teamAContainer = document.getElementById('teamA');
             const teamBContainer = document.getElementById('teamB');
-			
-			teamAContainer.innerHTML = '';
-			teamBContainer.innerHTML = '';
-			
+            
+            teamAContainer.innerHTML = '';
+            teamBContainer.innerHTML = '';
+            
             for (let i = 0; i < 4; i++) {
                 teamAContainer.appendChild(createMemberCard('A', i));
                 teamBContainer.appendChild(createMemberCard('B', i));
             }
+            
+            updateAllSelectOptions();
         }
 
         function createMemberCard(team, index) {
@@ -167,15 +164,9 @@ async function loadData() {
             card.className = 'member-card';
             card.innerHTML = `
                 <h4>成員 ${index + 1}</h4>
-				<select class="job-select" data-team="${team}" data-index="${index}">
-					<option value="">選擇職業</option>
-					${challengeData.length > 0 ? 
-						challengeData.map(job => 
-							`<option value="${job.編號}">${job.職業}</option>`
-						).join('') : 
-						'<option disabled>載入中...</option>'
-					}
-				</select>
+                <select class="job-select" data-team="${team}" data-index="${index}">
+                    <option value="">選擇職業</option>
+                </select>
                 <div class="member-stats" id="${team}-member-${index}-stats"></div>
             `;
             
@@ -188,6 +179,28 @@ async function loadData() {
             updateMemberStats(team, index, '');
             
             return card;
+        }
+
+        function updateAllSelectOptions() {
+            const allSelects = document.querySelectorAll('.job-select');
+            allSelects.forEach(select => {
+                const currentValue = select.value;
+                
+                select.innerHTML = '<option value="">選擇職業</option>';
+                
+                if (challengeData.length > 0) {
+                    challengeData.forEach(job => {
+                        const option = document.createElement('option');
+                        option.value = job.編號;
+                        option.textContent = job.職業;
+                        select.appendChild(option);
+                    });
+                    
+                    if (currentValue) {
+                        select.value = currentValue;
+                    }
+                }
+            });
         }
 
         function updateMemberStats(team, index, jobId) {
@@ -296,7 +309,6 @@ async function loadData() {
             container.innerHTML = html;
         }
 
-        // 設定事件監聽器
         document.getElementById('armor-pen-shoes').addEventListener('change', (e) => {
             document.getElementById('armor-pen-value').disabled = !e.target.checked;
             if (!e.target.checked) {
@@ -304,7 +316,6 @@ async function loadData() {
             }
         });
 
-        // 頁面載入時初始化
         document.addEventListener('DOMContentLoaded', loadData);
     </script>
 </body>
