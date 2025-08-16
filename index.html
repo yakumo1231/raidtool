@@ -191,8 +191,8 @@
                 if (challengeData.length > 0) {
                     challengeData.forEach(job => {
                         const option = document.createElement('option');
-                        option.value = job.編號;
-                        option.textContent = job.職業;
+                        option.value = job['編號'];
+                        option.textContent = job['職業'];
                         select.appendChild(option);
                     });
                     
@@ -206,7 +206,7 @@
         function updateMemberStats(team, index, jobId) {
             const statsContainer = document.getElementById(`${team}-member-${index}-stats`);
             
-            const jobData = jobId ? challengeData.find(job => job.編號 === jobId) : null;
+            const jobData = jobId ? challengeData.find(job => job['編號'] === jobId) : null;
             
             let statsHTML = '<div class="member-stats-grid">';
             statKeys.forEach(key => {
@@ -234,7 +234,7 @@
             selects.forEach(select => {
                 const jobId = select.value;
                 if (jobId) {
-                    const jobData = challengeData.find(job => job.編號 === jobId);
+                    const jobData = challengeData.find(job => job['編號'] === jobId);
                     if (jobData) {
                         statKeys.forEach(key => {
                             const value = jobData[key];
