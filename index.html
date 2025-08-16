@@ -489,15 +489,24 @@
         async function loadData() {
             try {
                 let response;
-                if (window.location.hostname === 'github.io' || 
-                    window.location.hostname.includes('github') ||
-                    window.location.protocol === 'https:') {
-                    const currentPath = window.location.pathname;
-                    const basePath = currentPath.substring(0, currentPath.lastIndexOf('/'));
-                    response = await fetch(`${basePath}/challenge.json`);
-                } else {
-                    response = await fetch('./challenge.json');
-                }
+				const paths = [
+					'./challenge.json',
+					'./Challenge.json', 
+					'challenge.json',
+					'Challenge.json'
+				];
+
+				let loadError = null;
+				for (const path of paths) {
+					try {
+						response = await fetch(path);
+						if (response.ok) break;
+						loadError = `HTTP ${response.status}`;
+					} catch (err) {
+						loadError = err.message;
+						continue;
+					}
+				}
                 
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
