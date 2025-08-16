@@ -486,42 +486,39 @@
             '扛吼/擋傷', '消火/解DeBuff', '霸體'
         ];
 
-        async function loadData() {
-            try {
-                let response;
-				const paths = [
-					'./challenge.json',
-					'./Challenge.json', 
-					'challenge.json',
-					'Challenge.json'
-				];
-
-				let loadError = null;
-				for (const path of paths) {
-					try {
-						response = await fetch(path);
-						if (response.ok) break;
-						loadError = `HTTP ${response.status}`;
-					} catch (err) {
-						loadError = err.message;
-						continue;
-					}
-				}
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
+async function loadData() {
+    const urls = [
+        'Challenge.json',
+        'challenge.json',
+        './Challenge.json',
+        './challenge.json'
+    ];
+    
+    for (const url of urls) {
+        try {
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json'
                 }
+            });
+            
+            if (response.ok) {
                 challengeData = await response.json();
                 initializeTeams();
                 updateAllSummaries();
-            } catch (error) {
-                console.error('載入數據失敗:', error);
-                challengeData = [];
-                initializeTeams();
-                updateAllSummaries();
-                showNotification('無法載入 challenge.json 檔案，請確保檔案存在於同一目錄中', 'error');
+                return;
             }
+        } catch (error) {
+            console.log(`嘗試載入 ${url} 失敗:`, error);
         }
+    }
+    
+    challengeData = [];
+    initializeTeams();
+    updateAllSummaries();
+    showNotification('無法載入 Challenge.json 檔案，請確保檔案存在於同一目錄中', 'error');
+}
 
         function showNotification(message, type = 'info') {
             const notification = document.createElement('div');
