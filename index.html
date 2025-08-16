@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>隊伍配置分析工具</title>
-    <link rel="stylesheet" href="styles.css">
     <style>
         * {
             margin: 0;
@@ -252,7 +251,6 @@
             <div class="team-container">
                 <h2>A隊伍</h2>
                 <div class="team-grid" id="teamA">
-                    <!-- 將由JavaScript動態生成4個成員卡片 -->
                 </div>
             </div>
 
@@ -260,7 +258,6 @@
             <div class="team-container">
                 <h2>B隊伍</h2>
                 <div class="team-grid" id="teamB">
-                    <!-- 將由JavaScript動態生成4個成員卡片 -->
                 </div>
             </div>
         </div>
@@ -361,7 +358,6 @@
     <script>
         let challengeData = [];
         
-        // 統計屬性列表
         const statKeys = [
             '物理Buff', '物理DeBuff', '物理破防', '物理總增益',
             '魔法Buff', '魔法DeBuff', '魔法破防', '魔法總增益',
@@ -370,18 +366,13 @@
             '扛吼/擋傷', '消火/解DeBuff', '霸體'
         ];
 
-        // 載入JSON數據（模擬數據，實際使用時需要真實的JSON檔案）
         async function loadData() {
             try {
-                
-                 const response = await fetch('challenge.json');
-                 if (!response.ok) {
-                     throw new Error(`HTTP error! Status: ${response.status}`);
-                 }
-                 challengeData = await response.json();
-                
-                // 暫時使用模擬數據
-                
+                const response = await fetch('challenge.json');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                challengeData = await response.json();
                 initializeTeams();
                 updateAllSummaries();
             } catch (error) {
@@ -390,19 +381,16 @@
             }
         }
 
-        // 初始化隊伍
         function initializeTeams() {
             const teamAContainer = document.getElementById('teamA');
             const teamBContainer = document.getElementById('teamB');
             
-            // 為每個隊伍創建4個成員卡片
             for (let i = 0; i < 4; i++) {
                 teamAContainer.appendChild(createMemberCard('A', i));
                 teamBContainer.appendChild(createMemberCard('B', i));
             }
         }
 
-        // 創建成員卡片
         function createMemberCard(team, index) {
             const card = document.createElement('div');
             card.className = 'member-card';
@@ -417,20 +405,17 @@
                 <div class="member-stats" id="${team}-member-${index}-stats"></div>
             `;
             
-            // 添加事件監聽器
             const select = card.querySelector('.job-select');
             select.addEventListener('change', (e) => {
                 updateMemberStats(team, index, e.target.value);
                 updateAllSummaries();
             });
             
-            // 初始化時顯示所有統計項目
             updateMemberStats(team, index, '');
             
             return card;
         }
 
-        // 更新成員統計 - 固定顯示所有項目
         function updateMemberStats(team, index, jobId) {
             const statsContainer = document.getElementById(`${team}-member-${index}-stats`);
             
@@ -451,7 +436,6 @@
             statsContainer.innerHTML = statsHTML;
         }
 
-        // 計算隊伍總和
         function calculateTeamStats(team) {
             const teamStats = {};
             const selects = document.querySelectorAll(`.job-select[data-team="${team}"]`);
@@ -468,18 +452,15 @@
                         statKeys.forEach(key => {
                             const value = jobData[key];
                             if (value && value !== '') {
-                                // 處理百分比值
                                 if (typeof value === 'string' && value.includes('%')) {
                                     const numValue = parseFloat(value.replace('%', ''));
                                     if (!isNaN(numValue)) {
                                         teamStats[key] += numValue;
                                     }
                                 } 
-                                // 處理純數字
                                 else if (!isNaN(parseFloat(value))) {
                                     teamStats[key] += parseFloat(value);
                                 }
-                                // 處理整數值（如霸體、扛吼等）
                                 else if (!isNaN(parseInt(value))) {
                                     teamStats[key] += parseInt(value);
                                 }
@@ -492,24 +473,20 @@
             return teamStats;
         }
 
-        // 更新所有匯總
         function updateAllSummaries() {
             const teamAStats = calculateTeamStats('A');
             const teamBStats = calculateTeamStats('B');
             const totalStats = {};
             
-            // 計算總和
             statKeys.forEach(key => {
                 totalStats[key] = (teamAStats[key] || 0) + (teamBStats[key] || 0);
             });
             
-            // 更新顯示
             updateSummaryDisplay('teamA-summary', teamAStats);
             updateSummaryDisplay('teamB-summary', teamBStats);
             updateSummaryDisplay('total-summary', totalStats);
         }
 
-        // 更新匯總顯示 - 固定顯示所有項目
         function updateSummaryDisplay(elementId, stats) {
             const container = document.getElementById(elementId);
             let html = '';
@@ -517,7 +494,6 @@
             statKeys.forEach(key => {
                 const value = stats[key] || 0;
                 
-                // 根據原始數據格式決定顯示方式
                 let displayValue = '-';
                 if (value !== 0) {
                     if (key.includes('Buff') || key.includes('增益') || 
