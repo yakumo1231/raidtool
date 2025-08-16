@@ -28,7 +28,6 @@
             text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
 
-        /* 隊伍選擇區域 - 移至頂部 */
         .teams-section {
             display: flex;
             gap: 20px;
@@ -129,6 +128,7 @@
 
         .stat-value {
             color: #00d4aa;
+            flex-wrap: wrap;
             font-weight: 600;
             font-size: 11px;
         }
