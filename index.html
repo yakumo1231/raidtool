@@ -33,16 +33,16 @@
             <div class="settings-grid">
                 <div class="setting-item">
                     <label>動速褲/鞋:</label>
-                    <input type="number" id="speed-gear" placeholder="數值" step="0.1">
+                    <input type="number" id="speed-gear" placeholder="數值" step="1%">
                 </div>
                 
                 <div class="setting-item">
                     <label>技傷/暴傷:</label>
                     <select id="damage-type">
                         <option value="">選擇</option>
-                        <option value="A">A</option>
-                        <option value="B">B</option>
-                        <option value="C">C</option>
+                        <option value="A">技傷</option>
+                        <option value="B">暴傷</option>
+                        <option value="C">技傷/暴傷</option>
                     </select>
                 </div>
                 
@@ -64,7 +64,7 @@
                 <div class="setting-item">
                     <input type="checkbox" id="armor-pen-shoes">
                     <label for="armor-pen-shoes">2+破防鞋:</label>
-                    <input type="number" id="armor-pen-value" placeholder="數值" step="0.1" disabled>
+                    <input type="number" id="armor-pen-value" placeholder="數值" step="1" disabled>
                 </div>
                 
                 <div class="setting-item">
@@ -137,9 +137,10 @@ async function loadData() {
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
-        challengeData = await response.json();
-        initializeTeams();
-        updateAllSummaries();
+		challengeData = await response.json();
+		initializeTeams();
+		updateAllSummaries();
+		updateAllSelects();
     } catch (error) {
         console.error('載入數據失敗:', error);
         challengeData = [];
@@ -148,6 +149,22 @@ async function loadData() {
         alert('無法載入 challenge.json，請確保檔案存在並與 index.html 同資料夾');
     }
 }
+
+		function updateAllSelects() {
+			const selects = document.querySelectorAll('.job-select');
+			selects.forEach(select => {
+				const currentValue = select.value;
+				select.innerHTML = `
+					<option value="">選擇職業</option>
+					${challengeData.map(job => 
+					`<option value="${job.編號}">${job.職業}</option>`
+				).join('')}
+			`;
+			if (currentValue) {
+				select.value = currentValue;
+				}
+			});
+		}
 
         function initializeTeams() {
             const teamAContainer = document.getElementById('teamA');
@@ -164,12 +181,15 @@ async function loadData() {
             card.className = 'member-card';
             card.innerHTML = `
                 <h4>成員 ${index + 1}</h4>
-                <select class="job-select" data-team="${team}" data-index="${index}">
-                    <option value="">選擇職業</option>
-                    ${challengeData.map(job => 
-                        `<option value="${job.編號}">${job.職業}</option>`
-                    ).join('')}
-                </select>
+				<select class="job-select" data-team="${team}" data-index="${index}">
+					<option value="">選擇職業</option>
+					${challengeData && challengeData.length > 0 ? 
+						challengeData.map(job => 
+							`<option value="${job.編號}">${job.職業}</option>`
+						).join('') : 
+						'<option disabled>載入中...</option>'
+					}
+				</select>
                 <div class="member-stats" id="${team}-member-${index}-stats"></div>
             `;
             
