@@ -10,11 +10,9 @@
     <div class="container">
         <h1 class="main-title">隊伍配置分析工具</h1>
         
-        <!-- A隊伍區塊 -->
         <div class="team-section">
             <h2 class="team-title">A隊伍</h2>
             
-            <!-- A隊伍成員配置 -->
             <div class="team-config">
                 <div class="stats-header">
                     <div class="member-column-header"></div>
@@ -42,11 +40,9 @@
                 </div>
                 
                 <div class="team-members" id="teamA">
-                    <!-- 成員將由JS動態生成 -->
                 </div>
             </div>
             
-            <!-- A隊伍額外設定 -->
             <div class="team-settings">
                 <h3>額外設定</h3>
                 <div class="settings-container">
@@ -124,18 +120,15 @@
                 </div>
             </div>
             
-            <!-- A隊伍總和數據 -->
             <div class="team-summary">
                 <h3>A隊伍總計</h3>
                 <div id="teamA-summary" class="summary-stats"></div>
             </div>
         </div>
         
-        <!-- B隊伍區塊 -->
         <div class="team-section">
             <h2 class="team-title">B隊伍</h2>
             
-            <!-- B隊伍成員配置 -->
             <div class="team-config">
                 <div class="stats-header">
                     <div class="member-column-header"></div>
@@ -163,11 +156,9 @@
                 </div>
                 
                 <div class="team-members" id="teamB">
-                    <!-- 成員將由JS動態生成 -->
                 </div>
             </div>
             
-            <!-- B隊伍額外設定 -->
             <div class="team-settings">
                 <h3>額外設定</h3>
                 <div class="settings-container">
@@ -245,14 +236,12 @@
                 </div>
             </div>
             
-            <!-- B隊伍總和數據 -->
             <div class="team-summary">
                 <h3>B隊伍總計</h3>
                 <div id="teamB-summary" class="summary-stats"></div>
             </div>
         </div>
         
-        <!-- 兩隊總和數據 -->
         <div class="total-section">
             <h2 class="total-title">兩隊總和數據</h2>
             <div id="total-summary" class="total-stats"></div>
@@ -305,7 +294,6 @@
             const row = document.createElement('div');
             row.className = 'member-row';
             
-            // 成員選擇區
             const memberSelect = document.createElement('div');
             memberSelect.className = 'member-select';
             memberSelect.innerHTML = `
@@ -315,12 +303,10 @@
                 </select>
             `;
             
-            // 數據值區
             const statsValues = document.createElement('div');
             statsValues.className = 'stats-values';
             statsValues.id = `${team}-member-${index}-stats`;
             
-            // 初始化空值
             statKeys.forEach(key => {
                 const valueSpan = document.createElement('span');
                 valueSpan.className = 'stat-value';
@@ -332,14 +318,12 @@
             row.appendChild(memberSelect);
             row.appendChild(statsValues);
             
-            // 綁定事件
             const select = memberSelect.querySelector('.job-select');
             select.addEventListener('change', (e) => {
                 updateMemberStats(team, index, e.target.value);
                 updateAllSummaries();
             });
             
-            // 填充選項
             if (challengeData.length > 0) {
                 challengeData.forEach(job => {
                     const option = document.createElement('option');
@@ -450,7 +434,6 @@
             container.innerHTML = html;
         }
 
-        // 綁定破防鞋checkbox事件
         document.getElementById('armor-pen-shoes-A').addEventListener('change', (e) => {
             document.getElementById('armor-pen-value-A').disabled = !e.target.checked;
             if (!e.target.checked) {
