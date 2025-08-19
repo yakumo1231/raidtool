@@ -13,10 +13,11 @@ body {
     padding: 20px 0;
 }
 
+/* 大板塊設置 */
 .container {
-    max-width: 1600px;
-    margin: 0 auto;
-    padding: 0 20px;
+    max-width: 1900px; /* 整體寬度 */
+    margin: 0 auto; /* 置中 */
+    padding: 0 20px; /* 左右向內壓縮 */
 }
 
 .main-title {
