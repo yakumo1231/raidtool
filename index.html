@@ -10,108 +10,252 @@
     <div class="container">
         <h1 class="main-title">隊伍配置分析工具</h1>
         
-        <div class="teams-section">
-            <div class="team-container">
-                <h2>A隊伍</h2>
-                <div class="team-grid" id="teamA">
+        <!-- A隊伍區塊 -->
+        <div class="team-section">
+            <h2 class="team-title">A隊伍</h2>
+            
+            <!-- A隊伍成員配置 -->
+            <div class="team-config">
+                <div class="stats-header">
+                    <div class="member-column-header"></div>
+                    <div class="stats-labels">
+                        <span>物理Buff</span>
+                        <span>物理DeBuff</span>
+                        <span>物理破防</span>
+                        <span>物理總增益</span>
+                        <span>魔法Buff</span>
+                        <span>魔法DeBuff</span>
+                        <span>魔法破防</span>
+                        <span>魔法總增益</span>
+                        <span>護盾</span>
+                        <span>降攻</span>
+                        <span>冷卻加速(秒)</span>
+                        <span>減少冷卻(秒)</span>
+                        <span>降抗</span>
+                        <span>每秒回魔</span>
+                        <span>乘算動速</span>
+                        <span>加算動速</span>
+                        <span>扛吼/擋傷</span>
+                        <span>消火/解DeBuff</span>
+                        <span>霸體</span>
+                    </div>
+                </div>
+                
+                <div class="team-members" id="teamA">
+                    <!-- 成員將由JS動態生成 -->
                 </div>
             </div>
-
-            <div class="team-container">
-                <h2>B隊伍</h2>
-                <div class="team-grid" id="teamB">
+            
+            <!-- A隊伍額外設定 -->
+            <div class="team-settings">
+                <h3>額外設定</h3>
+                <div class="settings-container">
+                    <div class="settings-row-1">
+                        <div class="setting-item">
+                            <label>動速褲/鞋:</label>
+                            <input type="number" id="speed-gear-A" placeholder="0" step="0.1" min="0">
+                            <span class="unit">%</span>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <label>技傷/暴傷:</label>
+                            <select id="damage-type-A">
+                                <option value="">選擇</option>
+                                <option value="A">技傷</option>
+                                <option value="B">暴傷</option>
+                                <option value="C">技傷/暴傷</option>
+                            </select>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <input type="checkbox" id="armor-pen-shoes-A">
+                            <label for="armor-pen-shoes-A">2+破防鞋:</label>
+                            <span class="prefix">+</span>
+                            <input type="number" id="armor-pen-value-A" placeholder="0" step="1" min="0" disabled>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-row-2">
+                        <div class="setting-item">
+                            <input type="checkbox" id="green-beast-A">
+                            <label for="green-beast-A">聖獸-綠</label>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <input type="checkbox" id="title-19-4-A">
+                            <label for="title-19-4-A">19-4稱號</label>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <input type="checkbox" id="death-title-A">
+                            <label for="death-title-A">死神稱號</label>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <input type="checkbox" id="armor-pen-shoes-percent-A">
+                            <label for="armor-pen-shoes-percent-A">2.5%破防鞋</label>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <input type="checkbox" id="dream-incense-A">
+                            <label for="dream-incense-A">夢緣香爐</label>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <input type="checkbox" id="dark-shadow-A">
+                            <label for="dark-shadow-A">侵暗之影</label>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <input type="checkbox" id="dark-badge-A">
+                            <label for="dark-badge-A">暗鬼徽章</label>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <input type="checkbox" id="ice-crystal-A">
+                            <label for="ice-crystal-A">冰晶露</label>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <input type="checkbox" id="wind-ball-A">
+                            <label for="wind-ball-A">風球</label>
+                        </div>
+                    </div>
                 </div>
+            </div>
+            
+            <!-- A隊伍總和數據 -->
+            <div class="team-summary">
+                <h3>A隊伍總計</h3>
+                <div id="teamA-summary" class="summary-stats"></div>
             </div>
         </div>
-
-        <div class="modular-settings">
-            <h2>額外設定</h2>
-            <div class="settings-grid">
-                <div class="setting-item">
-                    <label>動速褲/鞋:</label>
-                    <input type="number" id="speed-gear" placeholder="數值" step="1%">
+        
+        <!-- B隊伍區塊 -->
+        <div class="team-section">
+            <h2 class="team-title">B隊伍</h2>
+            
+            <!-- B隊伍成員配置 -->
+            <div class="team-config">
+                <div class="stats-header">
+                    <div class="member-column-header"></div>
+                    <div class="stats-labels">
+                        <span>物理Buff</span>
+                        <span>物理DeBuff</span>
+                        <span>物理破防</span>
+                        <span>物理總增益</span>
+                        <span>魔法Buff</span>
+                        <span>魔法DeBuff</span>
+                        <span>魔法破防</span>
+                        <span>魔法總增益</span>
+                        <span>護盾</span>
+                        <span>降攻</span>
+                        <span>冷卻加速(秒)</span>
+                        <span>減少冷卻(秒)</span>
+                        <span>降抗</span>
+                        <span>每秒回魔</span>
+                        <span>乘算動速</span>
+                        <span>加算動速</span>
+                        <span>扛吼/擋傷</span>
+                        <span>消火/解DeBuff</span>
+                        <span>霸體</span>
+                    </div>
                 </div>
                 
-                <div class="setting-item">
-                    <label>技傷/暴傷:</label>
-                    <select id="damage-type">
-                        <option value="">選擇</option>
-                        <option value="A">技傷</option>
-                        <option value="B">暴傷</option>
-                        <option value="C">技傷/暴傷</option>
-                    </select>
+                <div class="team-members" id="teamB">
+                    <!-- 成員將由JS動態生成 -->
                 </div>
-                
-                <div class="setting-item">
-                    <input type="checkbox" id="green-beast">
-                    <label for="green-beast">聖獸-綠</label>
+            </div>
+            
+            <!-- B隊伍額外設定 -->
+            <div class="team-settings">
+                <h3>額外設定</h3>
+                <div class="settings-container">
+                    <div class="settings-row-1">
+                        <div class="setting-item">
+                            <label>動速褲/鞋:</label>
+                            <input type="number" id="speed-gear-B" placeholder="0" step="0.1" min="0">
+                            <span class="unit">%</span>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <label>技傷/暴傷:</label>
+                            <select id="damage-type-B">
+                                <option value="">選擇</option>
+                                <option value="A">技傷</option>
+                                <option value="B">暴傷</option>
+                                <option value="C">技傷/暴傷</option>
+                            </select>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <input type="checkbox" id="armor-pen-shoes-B">
+                            <label for="armor-pen-shoes-B">2+破防鞋:</label>
+                            <span class="prefix">+</span>
+                            <input type="number" id="armor-pen-value-B" placeholder="0" step="1" min="0" disabled>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-row-2">
+                        <div class="setting-item">
+                            <input type="checkbox" id="green-beast-B">
+                            <label for="green-beast-B">聖獸-綠</label>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <input type="checkbox" id="title-19-4-B">
+                            <label for="title-19-4-B">19-4稱號</label>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <input type="checkbox" id="death-title-B">
+                            <label for="death-title-B">死神稱號</label>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <input type="checkbox" id="armor-pen-shoes-percent-B">
+                            <label for="armor-pen-shoes-percent-B">2.5%破防鞋</label>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <input type="checkbox" id="dream-incense-B">
+                            <label for="dream-incense-B">夢緣香爐</label>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <input type="checkbox" id="dark-shadow-B">
+                            <label for="dark-shadow-B">侵暗之影</label>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <input type="checkbox" id="dark-badge-B">
+                            <label for="dark-badge-B">暗鬼徽章</label>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <input type="checkbox" id="ice-crystal-B">
+                            <label for="ice-crystal-B">冰晶露</label>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <input type="checkbox" id="wind-ball-B">
+                            <label for="wind-ball-B">風球</label>
+                        </div>
+                    </div>
                 </div>
-                
-                <div class="setting-item">
-                    <input type="checkbox" id="title-19-4">
-                    <label for="title-19-4">19-4稱號</label>
-                </div>
-                
-                <div class="setting-item">
-                    <input type="checkbox" id="death-title">
-                    <label for="death-title">死神稱號</label>
-                </div>
-                
-                <div class="setting-item">
-                    <input type="checkbox" id="armor-pen-shoes">
-                    <label for="armor-pen-shoes">2+破防鞋:</label>
-                    <input type="number" id="armor-pen-value" placeholder="數值" step="1" disabled>
-                </div>
-                
-                <div class="setting-item">
-                    <input type="checkbox" id="armor-pen-shoes-percent">
-                    <label for="armor-pen-shoes-percent">2.5%破防鞋</label>
-                </div>
-                
-                <div class="setting-item">
-                    <input type="checkbox" id="dream-incense">
-                    <label for="dream-incense">夢緣香爐</label>
-                </div>
-                
-                <div class="setting-item">
-                    <input type="checkbox" id="dark-shadow">
-                    <label for="dark-shadow">侵暗之影</label>
-                </div>
-                
-                <div class="setting-item">
-                    <input type="checkbox" id="dark-badge">
-                    <label for="dark-badge">暗鬼徽章</label>
-                </div>
-                
-                <div class="setting-item">
-                    <input type="checkbox" id="ice-crystal">
-                    <label for="ice-crystal">冰晶露</label>
-                </div>
-                
-                <div class="setting-item">
-                    <input type="checkbox" id="wind-ball">
-                    <label for="wind-ball">風球</label>
-                </div>
+            </div>
+            
+            <!-- B隊伍總和數據 -->
+            <div class="team-summary">
+                <h3>B隊伍總計</h3>
+                <div id="teamB-summary" class="summary-stats"></div>
             </div>
         </div>
-
-        <div class="summary-section">
-            <div class="summary-grid">
-                <div class="summary-card">
-                    <h3>A隊伍總計</h3>
-                    <div id="teamA-summary" class="stats-grid"></div>
-                </div>
-                
-                <div class="summary-card">
-                    <h3>B隊伍總計</h3>
-                    <div id="teamB-summary" class="stats-grid"></div>
-                </div>
-                
-                <div class="summary-card total">
-                    <h3>兩隊總和</h3>
-                    <div id="total-summary" class="stats-grid"></div>
-                </div>
-            </div>
+        
+        <!-- 兩隊總和數據 -->
+        <div class="total-section">
+            <h2 class="total-title">兩隊總和數據</h2>
+            <div id="total-summary" class="total-stats"></div>
         </div>
     </div>
 
@@ -152,77 +296,72 @@
             teamBContainer.innerHTML = '';
             
             for (let i = 0; i < 4; i++) {
-                teamAContainer.appendChild(createMemberCard('A', i));
-                teamBContainer.appendChild(createMemberCard('B', i));
+                teamAContainer.appendChild(createMemberRow('A', i));
+                teamBContainer.appendChild(createMemberRow('B', i));
             }
-            
-            updateAllSelectOptions();
         }
 
-        function createMemberCard(team, index) {
-            const card = document.createElement('div');
-            card.className = 'member-card';
-            card.innerHTML = `
+        function createMemberRow(team, index) {
+            const row = document.createElement('div');
+            row.className = 'member-row';
+            
+            // 成員選擇區
+            const memberSelect = document.createElement('div');
+            memberSelect.className = 'member-select';
+            memberSelect.innerHTML = `
                 <h4>成員 ${index + 1}</h4>
                 <select class="job-select" data-team="${team}" data-index="${index}">
                     <option value="">選擇職業</option>
                 </select>
-                <div class="member-stats" id="${team}-member-${index}-stats"></div>
             `;
             
-            const select = card.querySelector('.job-select');
+            // 數據值區
+            const statsValues = document.createElement('div');
+            statsValues.className = 'stats-values';
+            statsValues.id = `${team}-member-${index}-stats`;
+            
+            // 初始化空值
+            statKeys.forEach(key => {
+                const valueSpan = document.createElement('span');
+                valueSpan.className = 'stat-value';
+                valueSpan.setAttribute('data-stat', key);
+                valueSpan.textContent = '-';
+                statsValues.appendChild(valueSpan);
+            });
+            
+            row.appendChild(memberSelect);
+            row.appendChild(statsValues);
+            
+            // 綁定事件
+            const select = memberSelect.querySelector('.job-select');
             select.addEventListener('change', (e) => {
                 updateMemberStats(team, index, e.target.value);
                 updateAllSummaries();
             });
             
-            updateMemberStats(team, index, '');
+            // 填充選項
+            if (challengeData.length > 0) {
+                challengeData.forEach(job => {
+                    const option = document.createElement('option');
+                    option.value = job['編號'];
+                    option.textContent = job['職業'];
+                    select.appendChild(option);
+                });
+            }
             
-            return card;
-        }
-
-        function updateAllSelectOptions() {
-            const allSelects = document.querySelectorAll('.job-select');
-            allSelects.forEach(select => {
-                const currentValue = select.value;
-                
-                select.innerHTML = '<option value="">選擇職業</option>';
-                
-                if (challengeData.length > 0) {
-                    challengeData.forEach(job => {
-                        const option = document.createElement('option');
-                        option.value = job['編號'];
-                        option.textContent = job['職業'];
-                        select.appendChild(option);
-                    });
-                    
-                    if (currentValue) {
-                        select.value = currentValue;
-                    }
-                }
-            });
+            return row;
         }
 
         function updateMemberStats(team, index, jobId) {
             const statsContainer = document.getElementById(`${team}-member-${index}-stats`);
-            
             const jobData = jobId ? challengeData.find(job => job['編號'] === jobId) : null;
             
-            let statsHTML = '<div class="member-stats-grid">';
-            statKeys.forEach(key => {
+            const valueSpans = statsContainer.querySelectorAll('.stat-value');
+            valueSpans.forEach((span, i) => {
+                const key = statKeys[i];
                 const value = jobData && jobData[key] ? jobData[key] : '-';
-                statsHTML += `
-                    <div class="stat-item">
-                        <span class="stat-label">${key}:</span>
-                        <span class="stat-value">${value}</span>
-                    </div>
-                `;
+                span.textContent = value;
             });
-            statsHTML += '</div>';
-            
-            if(statsContainer != null){
-				statsContainer.innerHTML = statsHTML;
-			}
         }
 
         function calculateTeamStats(team) {
@@ -311,10 +450,18 @@
             container.innerHTML = html;
         }
 
-        document.getElementById('armor-pen-shoes').addEventListener('change', (e) => {
-            document.getElementById('armor-pen-value').disabled = !e.target.checked;
+        // 綁定破防鞋checkbox事件
+        document.getElementById('armor-pen-shoes-A').addEventListener('change', (e) => {
+            document.getElementById('armor-pen-value-A').disabled = !e.target.checked;
             if (!e.target.checked) {
-                document.getElementById('armor-pen-value').value = '';
+                document.getElementById('armor-pen-value-A').value = '';
+            }
+        });
+        
+        document.getElementById('armor-pen-shoes-B').addEventListener('change', (e) => {
+            document.getElementById('armor-pen-value-B').disabled = !e.target.checked;
+            if (!e.target.checked) {
+                document.getElementById('armor-pen-value-B').value = '';
             }
         });
 
