@@ -325,32 +325,48 @@
             row.className = 'member-row';
             //宣告一個變數memberSelect 設定資料為一個新建的div
             const memberSelect = document.createElement('div');
+            //設定memberSelect的class
             memberSelect.className = 'member-select';
-            memberSelect.innerHTML = `
+            //設定memberSelect的HTML內容            
+            memberSelect.innerHTML = `                
                 <h4>成員 ${index + 1}</h4>
                 <select class="job-select" data-team="${team}" data-index="${index}">
                     <option value="">職業</option>
                 </select>
             `;
-            
+            //宣告一個變數statsValues 設定資料為一個新建的div
             const statsValues = document.createElement('div');
+            //設定statsValues的class
             statsValues.className = 'stats-values';
+            //設定statsValues的id
             statsValues.id = `${team}-member-${index}-stats`;
-            
+            //迴圈（循環動作）遍歷statKeys 
             statKeys.forEach(key => {
+                //宣告一個變數valueSpan 設定資料為一個新建的span
                 const valueSpan = document.createElement('span');
+                //設定valueSpan的class
                 valueSpan.className = 'stat-value';
+                //設定valueSpan的data-stat屬性
                 valueSpan.setAttribute('data-stat', key);
+                //設定valueSpan的文字內容
                 valueSpan.textContent = '-';
+                //將valueSpan加入statsValues
                 statsValues.appendChild(valueSpan);
             });
-            
+            //將memberSelect加入row
             row.appendChild(memberSelect);
+            //將statsValues加入row
             row.appendChild(statsValues);
-            
+
+            //宣告一個變數select 設定資料為memberSelect資料內 class名為job-select的所有Element
+            //querySelector不僅限抓取class 更改內容可依據id,欄位名稱如span/div等等的去抓取內容
+            //適用於更新資料 如抓官網更新內容等
             const select = memberSelect.querySelector('.job-select');
+            //設定select一個觸發條件(change) 如果達成條件就執行內部程式 觸發條件包含change,click等等的動作
             select.addEventListener('change', (e) => {
+                //執行updateMemberStats的函數
                 updateMemberStats(team, index, e.target.value);
+                //執行updateAllSummaries的函數
                 updateAllSummaries();
             });
             
