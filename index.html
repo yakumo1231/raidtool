@@ -480,70 +480,106 @@
             return teamStats;
         //結束function
         }
-
+        //宣告一個function 名稱為updateAllSummaries
         function updateAllSummaries() {
+            //宣告一個變數 名稱為teamAStats 設定為function calculateTeamStats回傳的資料
             const teamAStats = calculateTeamStats('A');
+            //宣告一個變數 名稱為teamBStats 設定為function calculateTeamStats回傳的資料
             const teamBStats = calculateTeamStats('B');
+            //宣告一個變數 名稱為totalStats 型態為陣列
             const totalStats = {};
-            
+            //遍歷statKeys
             statKeys.forEach(key => {
+                //設定totalStats的key為teamAStats[key]或0(避免無資料)+teamBStats[key]或0
                 totalStats[key] = (teamAStats[key] || 0) + (teamBStats[key] || 0);
+            //結束遍歷
             });
-            
+            //執行updateSummaryDisplay的函數
             updateSummaryDisplay('teamA-summary', teamAStats);
+            //執行updateSummaryDisplay的函數
             updateSummaryDisplay('teamB-summary', teamBStats);
+            //執行updateSummaryDisplay的函數
             updateSummaryDisplay('total-summary', totalStats);
+        //結束function
         }
-
+        //宣告一個function 名稱為updateSummaryDisplay 包含兩個變數elementId和stats
         function updateSummaryDisplay(elementId, stats) {
+            //宣告一個變數container 設定為抓取頁面id為elementId
             const container = document.getElementById(elementId);
+            //宣告一個變數html 設定為空
             let html = '';
-            
+            //遍歷statKeys
             statKeys.forEach(key => {
+                //宣告一個變數value 設定為stats[key]或0(避免無資料)
                 const value = stats[key] || 0;
-                
+                //宣告一個變數displayValue 設定為'-'
                 let displayValue = '-';
+                //如果value不為0
                 if (value !== 0) {
+                    //如果key的文字包含Buff "或" 增益...etc
                     if (key.includes('Buff') || key.includes('增益') || 
                         key.includes('護盾') || key.includes('降攻') || 
                         key.includes('回魔') || key.includes('動速')) {
+                        //變數displayValue設定為value的小數點後1位加上'%'的字元
                         displayValue = value.toFixed(1) + '%';
+                    //如果key的文字包含秒
                     } else if (key.includes('秒')) {
+                        //變數displayValue設定為value的小數點後2位加上'%'的字元
                         displayValue = value.toFixed(2);
+                    //如果key的文字包含降抗
                     } else if (key.includes('降抗')) {
+                        //變數displayValue設定為value四捨五入
                         displayValue = Math.round(value);
+                    //如果key的文字包含霸體,扛吼,消火
                     } else if (key.includes('霸體') || key.includes('扛吼') || key.includes('消火')) {
+                        //變數displayValue設定為value四捨五入
                         displayValue = Math.round(value);
+                    //以上條件都不符合時 執行以下程式碼
                     } else {
+                        //變數displayValue設定為value的小數點後1位加上'%'的字元
                         displayValue = value.toFixed(1) + '%';
+                    //結束if
                     }
+                //結束if
                 }
-                
+                //設定html的內容
                 html += `
                     <div class="summary-stat">
                         <span class="stat-name">${key}:</span>
                         <span class="stat-total">${displayValue}</span>
                     </div>
                 `;
+            //結束遍歷
             });
-            
+            //設定container的innerHTML屬性為html
             container.innerHTML = html;
+        //結束function
         }
-
+        //設定id為armor-pen-shoes-A的Element一個觸發條件(change) 如果達成條件就執行內部程式 
         document.getElementById('armor-pen-shoes-A').addEventListener('change', (e) => {
+            //設定id為armor-pen-shoes-A的Element的disabled屬性為!e.target.checked(true或false)
             document.getElementById('armor-pen-value-A').disabled = !e.target.checked;
+            //如果!e.target.checked(true或false)
             if (!e.target.checked) {
+                //設定id為armor-pen-shoes-A的Element的value屬性為''
                 document.getElementById('armor-pen-value-A').value = '';
+            //結束if
             }
+        //結束條件設定
         });
-        
+        //設定id為armor-pen-shoes-B的Element一個觸發條件(change) 如果達成條件就執行內部程式 
         document.getElementById('armor-pen-shoes-B').addEventListener('change', (e) => {
+            //設定id為armor-pen-shoes-B的Element的disabled屬性為!e.target.checked(true或false)
             document.getElementById('armor-pen-value-B').disabled = !e.target.checked;
+            //如果!e.target.checked(true或false)
             if (!e.target.checked) {
+                //設定id為armor-pen-shoes-B的Element的value屬性為''
                 document.getElementById('armor-pen-value-B').value = '';
+            //結束if
             }
+        //結束條件設定
         });
-
+        //頁面載入時(DOMContentLoaded)執行function"loadData"
         document.addEventListener('DOMContentLoaded', loadData);
     </script>
 </body>
