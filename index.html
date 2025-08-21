@@ -352,6 +352,7 @@
                 valueSpan.textContent = '-';
                 //將valueSpan加入statsValues
                 statsValues.appendChild(valueSpan);
+            //結束迴圈
             });
             //將memberSelect加入row
             row.appendChild(memberSelect);
@@ -368,67 +369,116 @@
                 updateMemberStats(team, index, e.target.value);
                 //執行updateAllSummaries的函數
                 updateAllSummaries();
+            //結束設定
             });
-            
+            //判斷challengeData內的資料長度大於0（challengeData為陣列 此處指陣列內容物數量）
             if (challengeData.length > 0) {
+                //迴圈 遍歷challengeData的內容 並設定每一個單獨的陣列內容物為共用的變數job
                 challengeData.forEach(job => {
+                    //宣告一個變數option 設定資料為一個新的option(下拉式選單的選項）
                     const option = document.createElement('option');
+                    //設定option的value屬性為job陣列的編號（此處為下拉式選單選中後 實際選中讓後段判斷的數值）
                     option.value = job['編號'];
+                    //設定option的文字內容為job陣列的職業（此處為下拉式選單給前端使用者看見的選項文字）
                     option.textContent = job['職業'];
+                    //將option新增到select內
                     select.appendChild(option);
+                    //結束遍歷
                 });
+            //結束判斷
             }
-            
+            //回傳變數row
             return row;
+        //結束function
         }
-
+        //宣告一個function 名稱updateMemberStats 包含三個變數
         function updateMemberStats(team, index, jobId) {
+            //宣告一個變數statsContainer 內容為抓取頁面id為${team}-member-${index}-stats的Element
             const statsContainer = document.getElementById(`${team}-member-${index}-stats`);
+            //宣告一個變數jobData 內容為判斷式：如果jobId存在 
+            //則內容為 在challengeData中設定每組內容都為job 當job內的編號與jobId相同時 設定為這組job
+            //如果jobId為空 則jobData為null
             const jobData = jobId ? challengeData.find(job => job['編號'] === jobId) : null;
-            
+            //宣告一個變數valueSpans 內容為statsContainer內 class為stat-value的Element
             const valueSpans = statsContainer.querySelectorAll('.stat-value');
+            //遍歷valueSpans 並將內容設定為span 迴圈座標index設定為i
             valueSpans.forEach((span, i) => {
+                //宣告一個變數key 內容為statsKeys陣列中的第i項
                 const key = statKeys[i];
+                //宣告一個變數value 內容為判斷式：如果jobData和jobData陣列中的key存在 則內容為jobData[key] 否則內容為-
                 const value = jobData && jobData[key] ? jobData[key] : '-';
+                //設定span的文字內容為value
                 span.textContent = value;
+            //結束遍歷
             });
+        //結束function
         }
-
+        //宣告一個function 名稱為calculateTeamStats 包含一個變數team
         function calculateTeamStats(team) {
+            //宣告一個變數teamStats 內容為一個空陣列
             const teamStats = {};
+            //宣告一個變數selects 內容為頁面中class為job-select[data-team="${team}"]的Element
             const selects = document.querySelectorAll(`.job-select[data-team="${team}"]`);
-            
+            //遍歷statKeys
             statKeys.forEach(key => {
+                //設定teamStats的key欄位為0
                 teamStats[key] = 0;
+            //結束遍歷
             });
-            
+            //遍歷selects並設定內容為select
             selects.forEach(select => {
+                //宣告一個變數jobId 設定為select的value屬性
                 const jobId = select.value;
+                //如果jobId存在（內容不為空
                 if (jobId) {
+                    //宣告一個變數jobData 內容為challenge中job["編號"]等於jobId
                     const jobData = challengeData.find(job => job['編號'] === jobId);
+                    //如果jobData存在
                     if (jobData) {
+                        //遍歷statKeys
                         statKeys.forEach(key => {
+                            //宣告一個變數value 設定為jobData陣列中編號為key的資料
                             const value = jobData[key];
+                            //如果value存在且value內容不為空
                             if (value && value !== '') {
+                                //如果value的型態為string(字串）且value的內容含有%這個字元
                                 if (typeof value === 'string' && value.includes('%')) {
+                                    //宣告一個變數numValue 設定為將%替換成''後的字串轉換的浮點數（小數） ex: 文字的"2.5%"轉換成數字的2.5
                                     const numValue = parseFloat(value.replace('%', ''));
-                                    if (!isNaN(numValue)) {
+                                    //如果numValue不是NaN  即轉換有成功（ex:2.7$會轉換失敗 回傳NaN)
+                                      if (!isNaN(numValue)) {
+                                        //設定teamStats的key內容 加上numValue(ex:1+=1 則回傳2）
                                         teamStats[key] += numValue;
+                                     //結束if
                                     }
+                                //結束if
                                 } 
+                                //當上方if條件不成立 再來判斷這邊的if
+                                //如果經過浮點數轉換的value不是NaN
                                 else if (!isNaN(parseFloat(value))) {
+                                    //teamStats的key內容 加上浮點數轉換的value
                                     teamStats[key] += parseFloat(value);
+                                //結束if
                                 }
+                                //如果經過整數轉換的value不是NaN(Int為整數 Float為浮點數）
                                 else if (!isNaN(parseInt(value))) {
+                                    //teamStats的key內容 加上整數轉換的value
                                     teamStats[key] += parseInt(value);
+                                //結束if
                                 }
+                            //結束if
                             }
+                        //結束遍歷
                         });
+                    //結束if
                     }
+                //結束if
                 }
+            //結束遍歷
             });
-            
+            //返回teamStats
             return teamStats;
+        //結束function
         }
 
         function updateAllSummaries() {
