@@ -1,0 +1,614 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', 'Microsoft JhengHei', system-ui, -apple-system, sans-serif;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    color: #e4e4e7;
+    line-height: 1.6;
+    min-height: 100vh;
+    padding: 20px 0;
+}
+
+/* 大板塊設置 */
+.container {
+    max-width: 1900px; /* 整體寬度 */
+    margin: 0 auto; /* 置中 */
+    padding: 0 20px; /* 左右向內壓縮 */
+}
+
+.main-title {
+    text-align: center;
+    color: #ffffff;
+    margin-bottom: 40px;
+    font-size: 2.5em;
+    font-weight: 700;
+    text-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* 隊伍區塊樣式 */
+.team-section {
+    background: rgba(43, 45, 49, 0.95);
+    border-radius: 16px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+.team-title {
+    color: #ffffff;
+    font-size: 1.8em;
+    font-weight: 600;
+    margin-bottom: 25px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #5865f2;
+}
+
+/* 隊伍配置區域 */
+.team-config {
+    margin-bottom: 30px;
+    background: rgba(49, 51, 56, 0.5);
+    border-radius: 12px;
+    padding: 20px;
+    overflow-x: auto;
+}
+
+.stats-header {
+    display: flex;
+    margin-bottom: 15px;
+}
+
+.member-column-header {
+    width: 120px;
+    flex-shrink: 0;
+}
+
+.stats-labels,
+.stats-labels-A,
+.stats-labels-B {
+    display: flex;
+    gap: 0;
+    padding-left: 20px;
+}
+
+
+.stats-labels span,
+.stats-labels-A span:not(.stat-value),
+.stats-labels-B span:not(.stat-value) {
+    display: table-cell;
+    width: 85px;
+    min-width: 85px;
+    font-size: 11px;
+    color: #b9bbbe;
+    font-weight: 600;
+    text-align: center;
+    padding: 5px 2px;
+    background: rgba(30, 31, 34, 0.6);
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.stats-labels span:first-child,
+.stats-labels-A span:first-child,
+.stats-labels-B span:first-child {
+    border-radius: 6px 0 0 6px;
+}
+
+.stats-labels span:last-child,
+.stats-labels-A span:last-child,
+.stats-labels-B span:last-child {
+    border-radius: 0 6px 6px 0;
+    border-right: none;
+}
+
+/* 成員行樣式 */
+.team-members {
+    margin-top:100px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.member-row {
+    display: flex;
+    align-items: stretch;
+    min-height: 80px;
+}
+
+.stats-labels-A .member-row:not(:first-child),
+.stats-labels-B .member-row:not(:first-child){
+    margin-top: 20px;
+}
+
+.member-select {
+    width: 150px;
+    flex-shrink: 0;
+    background: #1e1f22;
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: 1px solid rgba(88, 101, 242, 0.3);
+}
+
+.member-select h4 {
+    color: #ffffff;
+    font-size: 14px;
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+.job-select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #404249;
+    border-radius: 6px;
+    background: #2b2d31;
+    color: #e4e4e7;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.select2-container{
+    border: 1px solid #404249;
+    border-radius: 6px;
+    background: #2b2d31;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.select2-results__option--selectable{
+    color: black;
+}
+
+.job-select:focus {
+    outline: none;
+    border-color: #5865f2;
+    box-shadow: 0 0 0 2px rgba(88, 101, 242, 0.2);
+}
+
+.select2-container:focus{
+    outline: none;
+    border-color: #5865f2;
+    box-shadow: 0 0 0 2px rgba(88, 101, 242, 0.2);
+}
+
+.stats-values {
+    display: flex;
+    gap: 0;
+    /*padding-left: 20px;*/
+    align-items: center;
+}
+
+.stat-value {
+    width: 85px;
+    padding: 8px 2px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: #00d4aa;
+    background: rgba(30, 31, 34, 0.4);
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stat-value:hover {
+    background: rgba(88, 101, 242, 0.1);
+}
+
+.stat-value:last-child {
+    border-right: none;
+}
+
+/* 額外設定區域 */
+.team-settings {
+    background: rgba(49, 51, 56, 0.5);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 25px;
+}
+
+.team-settings h3 {
+    color: #ffffff;
+    font-size: 1.3em;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.settings-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.settings-row-1,
+.settings-row-2 {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.setting-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 15px;
+    background: rgba(30, 31, 34, 0.6);
+    border-radius: 8px;
+    border: 1px solid rgba(64, 66, 73, 0.5);
+    transition: all 0.3s ease;
+}
+
+.setting-item:hover {
+    background: rgba(88, 101, 242, 0.1);
+    border-color: #5865f2;
+    transform: translateY(-2px);
+}
+
+.setting-item label {
+    color: #e4e4e7;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.setting-item input[type="number"] {
+    width: 70px;
+    padding: 6px 8px;
+    border: 1px solid #404249;
+    border-radius: 6px;
+    background: #1e1f22;
+    color: #00d4aa;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.setting-item input[type="number"]:focus {
+    outline: none;
+    border-color: #5865f2;
+    box-shadow: 0 0 0 2px rgba(88, 101, 242, 0.2);
+}
+
+.setting-item input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #5865f2;
+    cursor: pointer;
+}
+
+.setting-item select {
+    padding: 6px 10px;
+    border: 1px solid #404249;
+    border-radius: 6px;
+    background: #1e1f22;
+    color: #e4e4e7;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.setting-item option{
+    color: black;
+}
+
+.setting-item select:focus {
+    outline: none;
+    border-color: #5865f2;
+    box-shadow: 0 0 0 2px rgba(88, 101, 242, 0.2);
+}
+
+.unit,
+.prefix {
+    color: #b9bbbe;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* 隊伍總計區域 */
+.team-summary {
+    margin-top:20px;
+    background: rgba(49, 51, 56, 0.5);
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.team-summary h3 {
+    color: #ffffff;
+    font-size: 1.3em;
+    margin-bottom: 15px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.summary-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+}
+
+.summary-stat {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 15px;
+    background: rgba(30, 31, 34, 0.6);
+    border-radius: 8px;
+    border: 1px solid rgba(64, 66, 73, 0.3);
+    transition: all 0.2s ease;
+}
+
+.summary-stat:hover {
+    background: rgba(88, 101, 242, 0.1);
+    transform: translateX(5px);
+}
+
+.stat-name {
+    color: #b9bbbe;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.stat-total {
+    color: #00d4aa;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+/* 兩隊總和區域 */
+.total-section {
+    background: linear-gradient(135deg, #5865f2 0%, #7c3aed 100%);
+    border-radius: 16px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 8px 32px rgba(88, 101, 242, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.total-section::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    animation: rotate 20s linear infinite;
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.total-title {
+    color: #ffffff;
+    font-size: 2em;
+    font-weight: 700;
+    margin-bottom: 25px;
+    text-align: center;
+    text-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    position: relative;
+    z-index: 1;
+}
+
+.total-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 15px;
+    position: relative;
+    z-index: 1;
+}
+
+.total-stats .summary-stat {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+.total-stats .summary-stat:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.total-stats .stat-name {
+    color: rgba(255, 255, 255, 0.95);
+    font-weight: 600;
+}
+
+.total-stats .stat-total {
+    color: #fbbf24;
+    font-size: 14px;
+    font-weight: 800;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* 響應式設計 */
+@media (max-width: 1200px) {
+    .stats-labels span,
+    .stats-labels-A span,
+    .stat-value {
+        width: 75px;
+        font-size: 12px;
+    }
+    .stats-labels span,
+    .stats-labels-A span:not(.stat-value),
+    .stats-labels-B span:not(.stat-value) {
+        min-width: 75px;
+        width: 75px;
+    }
+}
+
+@media (max-width: 992px) {
+    .team-config {
+        overflow-x: scroll;
+    }
+    
+    .stats-header,
+    .member-row {
+        min-width: 800px;
+    }
+    
+    .summary-stats,
+    .total-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 0 10px;
+    }
+    
+    .team-section,
+    .total-section {
+        padding: 20px;
+    }
+    
+    .main-title {
+        font-size: 2em;
+    }
+    
+    .team-title {
+        font-size: 1.5em;
+    }
+    
+    .settings-row-1,
+    .settings-row-2 {
+        flex-direction: column;
+    }
+    
+    .setting-item {
+        width: 100%;
+    }
+    
+    .summary-stats,
+    .total-stats {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* 滾動條樣式 */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(30, 31, 34, 0.6);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #5865f2;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #4752c4;
+}
+
+/* 動畫效果 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.team-section,
+.total-section {
+    animation: fadeIn 0.6s ease-out;
+}
+
+.team-section:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.total-section {
+    animation-delay: 0.4s;
+}
+
+/* 特殊效果 */
+.job-select option {
+    background: #1e1f22;
+    color: #e4e4e7;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    opacity: 1;
+    height: 20px;
+}
+
+/* 禁用狀態 */
+input[type="number"]:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: rgba(30, 31, 34, 0.3);
+}
+
+/* 焦點狀態增強 */
+input:focus,
+select:focus {
+    background: rgba(88, 101, 242, 0.05);
+}
+
+/* 加載動畫 */
+.loading {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #5865f2;
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.hidden{
+    display: none !important;
+}
+
+
+#tabs-A-1 .magical,
+#tabs-A-1 .detail,
+#tabs-A-2 .physics,
+#tabs-A-2 .detail,
+#tabs-B-1 .magical,
+#tabs-B-1 .detail,
+#tabs-B-2 .physics,
+#tabs-B-2 .detail{
+    display:none !important;
+}
+
+.img-flag{
+    width: 30px;
+}
